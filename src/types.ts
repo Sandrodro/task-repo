@@ -14,6 +14,8 @@ export type Product = {
   man_id: number;
   model_id: number;
   car_model: string;
+  photo: string;
+  photo_ver: number;
 };
 
 export type Manufacturer = {
@@ -24,6 +26,15 @@ export type Manufacturer = {
   man_name: string;
 };
 
+export type Category = {
+  category_id: number;
+  category_type: number;
+  has_icon: number;
+  seo_title: string;
+  title: string;
+  vehicle_types: number[];
+};
+
 export type Model = {
   cat_man_id: number;
   cat_model_id: number;
@@ -32,10 +43,20 @@ export type Model = {
   is_moto: boolean;
   is_spec: boolean;
   man_id: number;
-  model_group: "string";
+  model_group: string;
   model_id: number;
-  model_name: "string";
+  model_name: string;
   show_in_salons: number;
   shown_in_slider: number;
   sort_order: number;
+};
+
+export type FilterAndSort = {
+  ForRent: string;
+  Mans: string;
+  Cats: string;
+  PriceFrom: string;
+  PriceTo: string;
+  SortOrder: string;
+  Period: string;
 };

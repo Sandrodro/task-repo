@@ -1,7 +1,20 @@
-import React from "react";
-import styled from "styled-components";
+import carIcon from "../../assets/carIcon.svg";
+import heartIcon from "../../assets/heartIcon.svg";
+import penIcon from "../../assets/penIcon.svg";
 
-import { Product } from "../../types";
+import {
+  MainContainer,
+  ImageContainer,
+  InfoContainer,
+  TopInfoContainer,
+  InnerFlex,
+  ProductTitle,
+  YearLabel,
+  MiddleInfoContainer,
+  MiddleInnerFlex,
+  LowerInfoContainer,
+  LowerInnerFlex,
+} from "./CarStyles";
 
 interface IProps {
   manufacturer_name: string;
@@ -17,6 +30,9 @@ interface IProps {
   prom_color?: number;
   model_name: string;
   car_model: string;
+  photo: string;
+  photo_ver: number;
+  car_id: number;
 }
 
 const CarCard = ({
@@ -24,10 +40,25 @@ const CarCard = ({
   car_model,
   manufacturer_name,
   prod_year,
+  photo,
+  car_id,
+  photo_ver,
+  engine_volume,
+  car_run_km,
+  right_wheel,
+  price,
+  views,
+  order_date,
 }: IProps) => {
   return (
     <MainContainer>
-      <ImageContainer />
+      <ImageContainer>
+        <img
+          src={`https://static.my.ge/myauto/photos/${photo}/thumbs/${car_id}_1.jpg?v=${photo_ver}`}
+          width={180}
+          style={{ borderRadius: "8px" }}
+        ></img>
+      </ImageContainer>
       <InfoContainer>
         <TopInfoContainer>
           <InnerFlex>
@@ -36,37 +67,30 @@ const CarCard = ({
           </InnerFlex>
           <InnerFlex></InnerFlex>
         </TopInfoContainer>
+        <MiddleInfoContainer>
+          <MiddleInnerFlex>
+            <span>{engine_volume}</span>
+            <span>Automatic</span>
+          </MiddleInnerFlex>
+          <MiddleInnerFlex>
+            <span>{car_run_km} კმ</span>
+            <span>{right_wheel ? "მარჯვენა" : "მარცხნივ"}</span>
+          </MiddleInnerFlex>
+          <MiddleInnerFlex>{price} ლ</MiddleInnerFlex>
+        </MiddleInfoContainer>
+        <LowerInfoContainer>
+          <LowerInnerFlex>
+            {views} {order_date}
+          </LowerInnerFlex>
+          <LowerInnerFlex>
+            <img src={penIcon} width={14}></img>
+            <img src={carIcon} width={14}></img>
+            <img src={heartIcon} width={14}></img>
+          </LowerInnerFlex>
+        </LowerInfoContainer>
       </InfoContainer>
     </MainContainer>
   );
 };
 
 export default CarCard;
-
-const MainContainer = styled.section.attrs({
-  className: "grid grid-cols-5 bg-white",
-})``;
-
-const ImageContainer = styled.div.attrs({
-  className: "col-span-1 bg-red",
-})``;
-
-const InfoContainer = styled.div.attrs({
-  className: "col-span-4 bg-blue grid grid-rows-4 grid-cols-1",
-})``;
-
-const TopInfoContainer = styled.div.attrs({
-  className: "row-span-1 flex flex-row justify-between",
-})``;
-
-const InnerFlex = styled.div.attrs({
-  className: "flex flex-row gap-x-1.5",
-})``;
-
-const ProductTitle = styled.h4.attrs({
-  className: "text-black text-sm font-semibold",
-})``;
-
-const YearLabel = styled.p.attrs({
-  className: "text-gray-400 text-sm font-semibold",
-})``;
