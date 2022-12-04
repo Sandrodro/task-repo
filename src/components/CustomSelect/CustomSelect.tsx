@@ -8,9 +8,20 @@ interface IProps {
   field: any;
   placeholder: string;
   isMulti: boolean;
+  disabled?: boolean;
+  setStateFn?: Function;
+  handleChange?: Function;
 }
 
-const CustomSelect = ({ data, field, placeholder, isMulti }: IProps) => {
+const CustomSelect = ({
+  data,
+  field,
+  placeholder,
+  isMulti,
+  disabled = false,
+  setStateFn,
+  handleChange,
+}: IProps) => {
   const [optionSelected, setOptionSelected] = useState(null);
 
   const formik = useFormikContext();
@@ -18,6 +29,12 @@ const CustomSelect = ({ data, field, placeholder, isMulti }: IProps) => {
   const onChange = (option: any) => {
     setOptionSelected(option);
     if (isMulti) {
+      if (handleChange) {
+        handleChange(option);
+      }
+      if (setStateFn) {
+        setStateFn(option.map((item: any) => parseInt(item.value)));
+      }
       formik.setFieldValue(
         field.name,
         option.map((item: any) => item.value)
@@ -66,7 +83,14 @@ const CustomSelect = ({ data, field, placeholder, isMulti }: IProps) => {
           fontWeight: "500",
           color: "#6F7383",
         }),
+        option: (base) => ({
+          ...base,
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+        }),
       }}
+      isDisabled={disabled}
       options={data}
       isMulti={isMulti}
       isClearable={true}
@@ -90,7 +114,7 @@ const Option = (props: any) => {
           type="checkbox"
           checked={props.isSelected}
           onChange={() => null}
-        />{" "}
+        />
         <label>{props.label}</label>
       </components.Option>
     </div>

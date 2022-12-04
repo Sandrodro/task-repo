@@ -21,7 +21,7 @@ const getProductList = async (url: string) => {
   return parsed;
 };
 
-const getCarModelsPerManufacturer = async (manufacturerId: number) => {
+const getCarModelsPerManufacturer = async (manufacturerId: number | string) => {
   const data = await fetch(
     `${CAR_MODELS_API_ENDPOINT}?man_id=${manufacturerId}`
   );

@@ -1,12 +1,17 @@
 import { Formik, Field, Form } from "formik";
+import { useState, useEffect } from "react";
 
 import CustomSelect from "../CustomSelect";
+
+import { getCarModelsPerManufacturer } from "../../services";
 
 import FilterCarIcon from "../../assets/filterCarIcon.svg";
 import FilterBikeIcon from "../../assets/filterBikeIcon.svg";
 import FilterTruckIcon from "../../assets/filterTruckIcon.svg";
 
-import { Manufacturer, Model, Category, FilterAndSort } from "../../types";
+import { Manufacturer, Category, FilterAndSort, Model } from "../../types";
+
+import INFO_JSON from "../../assets/json/mainInfo.json";
 
 import {
   FilterContainer,
@@ -19,7 +24,6 @@ import {
   RangeContainer,
   SubmitButton,
   Label,
-  StyledSelect,
   StyledNumberField,
   InputVerticalFlex,
 } from "./FilterStyles";
@@ -33,10 +37,46 @@ interface IProps {
 
 const Filter = ({
   manufacturersList,
-  modelList,
   categoryList,
   setFilterAndSort,
 }: IProps) => {
+  const [selectedManufacturerModels, setSelectedManufacturerModels] = useState<
+    Model[]
+  >([]);
+  const [manufacturerIds, setManufacturerIds] = useState<any>([]);
+
+  const [modelIds, setModelIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (
+      !manufacturerIds.every((item: any) => item === "") ||
+      manufacturerIds.length !== 0
+    ) {
+      const promiseArray: any = [];
+      manufacturerIds.forEach((manId: number) => {
+        const promise = new Promise((resolve, reject) => {
+          getCarModelsPerManufacturer(manId).then((data) => {
+            console.log(data);
+            const arr = data.data.map(
+              (item: any) => `${manId}.${item.model_id}`
+            );
+            resolve(data);
+          });
+        });
+        promiseArray.push(promise);
+        Promise.all(promiseArray).then((data) => {
+          const spreaded: Model[] = [];
+          data.forEach((item) => spreaded.push(...item.data));
+          setSelectedManufacturerModels(spreaded);
+        });
+      });
+    }
+  }, [manufacturerIds]);
+
+  const handleSetModel = (option: any) => {
+    setModelIds(option.map((item: any) => `${item.man_id}.${item.value}`));
+  };
+
   return (
     <Formik
       initialValues={{
@@ -47,10 +87,32 @@ const Filter = ({
         PriceTo: "",
       }}
       onSubmit={async (values) => {
+        let modelIdArray: string[] = [];
+        if (modelIds.length) {
+          const split = modelIds.map((item) => item.split("."));
+          const uniqueMans: any = [];
+          split.forEach((item: any) => {
+            if (!uniqueMans.includes(item[0])) {
+              uniqueMans.push(item[0]);
+            }
+          });
+          const duplicated = uniqueMans.map((item: any) => [item, item]);
+          modelIdArray = duplicated.map((item: any) => {
+            const manId = item[0];
+            let string = item[1];
+            split.forEach((modelId: any) => {
+              if (modelId[0] === manId) {
+                string = string.concat(".").concat(modelId[1]);
+              }
+            });
+            return string;
+          });
+        }
+
         setFilterAndSort((value: FilterAndSort) => ({
           ...value,
           ForRent: values.ForRent,
-          Mans: values.Mans,
+          Mans: modelIds.length ? modelIdArray : values.Mans,
           Cats: values.Cats,
           PriceFrom: values.PriceFrom,
           PriceTo: values.PriceTo,
@@ -86,6 +148,7 @@ const Filter = ({
               <Field name="Mans" id="Mans">
                 {({ field }: { field: any }) => (
                   <CustomSelect
+                    setStateFn={setManufacturerIds}
                     placeholder="მწარმოებელი"
                     isMulti
                     field={field}
@@ -95,6 +158,33 @@ const Filter = ({
                     }))}
                   />
                 )}
+              </Field>
+            </InputVerticalFlex>
+            <InputVerticalFlex>
+              <Label htmlFor="Mans">მოდელი</Label>
+              <Field name="Mans" id="Mans">
+                {({ field, form }: { field: any; form: any }) => {
+                  const disabled =
+                    form.values.Mans.every((item: any) => item === "") ||
+                    form.values.Mans.length === 0;
+
+                  const dataArr = selectedManufacturerModels || [];
+
+                  return (
+                    <CustomSelect
+                      placeholder="მოდელი"
+                      handleChange={handleSetModel}
+                      isMulti
+                      disabled={disabled}
+                      field={field}
+                      data={dataArr?.map((item: Model) => ({
+                        value: item.model_id,
+                        label: item.model_name,
+                        man_id: item.man_id,
+                      }))}
+                    />
+                  );
+                }}
               </Field>
             </InputVerticalFlex>
             <InputVerticalFlex>

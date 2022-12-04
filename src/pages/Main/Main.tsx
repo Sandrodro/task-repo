@@ -71,7 +71,6 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    console.log(filterAndSort);
     if (filterAndSort) {
       const requestUrl = `${
         process.env.REACT_APP_PRODUCT_LIST
