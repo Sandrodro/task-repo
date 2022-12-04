@@ -17,6 +17,7 @@ import {
   ProductsMeta,
 } from "../../types";
 
+import Pagination from "../../components/Pagination";
 import Header from "../../components/Header";
 import CarCard from "../../components/CarCard";
 import Filter from "../../components/Filter";
@@ -47,7 +48,10 @@ const Main = () => {
     PriceTo: "",
     SortOrder: "",
     Period: "",
+    Page: 1,
   });
+
+  const [filterLoading, setFilterLoading] = useState(false);
 
   const dataLoaded = useMemo(() => {
     const allLoaded = [
@@ -78,14 +82,16 @@ const Main = () => {
         filterAndSort.ForRent
       }&Mans=${filterAndSort.Mans.join(
         "-"
-      )}&CurrencyID=1&MileageType=1&SortOrder=${
-        filterAndSort.SortOrder
-      }&Page=1&Period=${filterAndSort.Period}&Cats=${filterAndSort.Cats.join(
+      )}&CurrencyID=1&MileageType=1&SortOrder=${filterAndSort.SortOrder}&Page=${
+        filterAndSort.Page
+      }&Period=${filterAndSort.Period}&Cats=${filterAndSort.Cats.join(
         "."
       )}&PriceFrom=${filterAndSort.PriceFrom}&PriceTo=${filterAndSort.PriceTo}`;
+      setFilterLoading(true);
       getProductList(requestUrl).then((data: any) => {
         setProductList(data.data.items);
         setProductsMeta(data.data.meta);
+        setFilterLoading(false);
       });
     }
   }, [filterAndSort]);
@@ -165,6 +171,7 @@ const Main = () => {
                     );
                     return (
                       <CarCard
+                        loading={filterLoading}
                         key={product.car_id}
                         manufacturer_name={manufacturer?.man_name || "Unknown"}
                         prod_year={product.prod_year}
@@ -187,6 +194,14 @@ const Main = () => {
                 </>
               )}
             </ListContainer>
+            {dataLoaded && (
+              <Pagination
+                totalPages={productsMeta?.total as number}
+                currentPage={productsMeta?.current_page as number}
+                setCurrentPage={setFilterAndSort}
+                limit={productsMeta?.per_page as number}
+              />
+            )}
           </RightGridItem>
         </MainFlex>
       </BodyContainer>

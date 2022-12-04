@@ -52,6 +52,7 @@ export type FilterAndSort = {
   PriceTo: string;
   SortOrder: string;
   Period: string;
+  Page: number;
 };
 
 export type ProductsMeta = {

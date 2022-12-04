@@ -1,7 +1,9 @@
 import styled from "styled-components";
 export const MainContainer = styled.section.attrs({
   className: "grid grid-cols-5 bg-white rounded-xl w-full gap-x-1.5 py-4 px-3",
-})``;
+})<{ loading: boolean }>`
+  opacity: ${(p) => (p.loading ? "70%" : "100%")};
+`;
 
 export const ImageContainer = styled.div.attrs({
   className: "col-span-1 bg-red",

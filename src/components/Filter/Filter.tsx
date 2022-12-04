@@ -11,8 +11,6 @@ import FilterTruckIcon from "../../assets/filterTruckIcon.svg";
 
 import { Manufacturer, Category, FilterAndSort, Model } from "../../types";
 
-import INFO_JSON from "../../assets/json/mainInfo.json";
-
 import {
   FilterContainer,
   FilterIcon,
@@ -56,7 +54,6 @@ const Filter = ({
       manufacturerIds.forEach((manId: number) => {
         const promise = new Promise((resolve, reject) => {
           getCarModelsPerManufacturer(manId).then((data) => {
-            console.log(data);
             const arr = data.data.map(
               (item: any) => `${manId}.${item.model_id}`
             );
@@ -109,13 +106,16 @@ const Filter = ({
           });
         }
 
+        console.log(modelIds, manufacturerIds);
+
         setFilterAndSort((value: FilterAndSort) => ({
           ...value,
           ForRent: values.ForRent,
-          Mans: modelIds.length ? modelIdArray : values.Mans,
+          Mans: modelIds.length ? modelIdArray : manufacturerIds,
           Cats: values.Cats,
           PriceFrom: values.PriceFrom,
           PriceTo: values.PriceTo,
+          Page: 1,
         }));
       }}
     >

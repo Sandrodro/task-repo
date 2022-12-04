@@ -43,6 +43,7 @@ interface IProps {
   photo: string;
   photo_ver: number;
   car_id: number;
+  loading: boolean;
 }
 
 const CarCard = ({
@@ -59,6 +60,7 @@ const CarCard = ({
   price,
   views,
   order_date,
+  loading,
 }: IProps) => {
   const differenceInDays = useMemo(() => {
     const orderDate = moment(order_date);
@@ -68,7 +70,7 @@ const CarCard = ({
   }, [order_date]);
 
   return (
-    <MainContainer>
+    <MainContainer loading={loading}>
       <ImageContainer>
         <img
           src={`https://static.my.ge/myauto/photos/${photo}/thumbs/${car_id}_1.jpg?v=${photo_ver}`}
