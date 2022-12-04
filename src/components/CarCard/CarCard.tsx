@@ -1,6 +1,13 @@
+import { useMemo } from "react";
+
 import carIcon from "../../assets/carIcon.svg";
 import heartIcon from "../../assets/heartIcon.svg";
 import penIcon from "../../assets/penIcon.svg";
+import AutomaticIcon from "../../assets/automaticIcon.svg";
+import KmIcon from "../../assets/kmIcon.svg";
+import VolumeIcon from "../../assets/volumeIcon.svg";
+import WheelIcon from "../../assets/wheelIcon.svg";
+import moment from "moment";
 
 import {
   MainContainer,
@@ -14,7 +21,10 @@ import {
   MiddleInnerFlex,
   LowerInfoContainer,
   LowerInnerFlex,
-} from "./CarStyles";
+  AttributeText,
+  AttributeContainer,
+  PriceContainer,
+} from "./CarCardStyles";
 
 interface IProps {
   manufacturer_name: string;
@@ -50,6 +60,13 @@ const CarCard = ({
   views,
   order_date,
 }: IProps) => {
+  const differenceInDays = useMemo(() => {
+    const orderDate = moment(order_date);
+    const currentDate = moment(new Date());
+    const diff = currentDate.diff(orderDate, "days");
+    return diff;
+  }, [order_date]);
+
   return (
     <MainContainer>
       <ImageContainer>
@@ -69,18 +86,32 @@ const CarCard = ({
         </TopInfoContainer>
         <MiddleInfoContainer>
           <MiddleInnerFlex>
-            <span>{engine_volume}</span>
-            <span>Automatic</span>
+            <AttributeContainer>
+              <img src={VolumeIcon} width={16}></img>
+              <AttributeText>{engine_volume} დატ.ჰიბრიდი</AttributeText>
+            </AttributeContainer>
+            <AttributeContainer>
+              <img src={AutomaticIcon} width={16}></img>
+              <AttributeText>ავტომატიკა</AttributeText>
+            </AttributeContainer>
           </MiddleInnerFlex>
           <MiddleInnerFlex>
-            <span>{car_run_km} კმ</span>
-            <span>{right_wheel ? "მარჯვენა" : "მარცხნივ"}</span>
+            <AttributeContainer>
+              <img src={KmIcon} width={16}></img>
+              <AttributeText>{car_run_km} კმ</AttributeText>
+            </AttributeContainer>
+            <AttributeContainer>
+              <img src={WheelIcon} width={16}></img>
+              <AttributeText>
+                {right_wheel ? "მარჯვენა" : "მარცხნივ"}
+              </AttributeText>
+            </AttributeContainer>
           </MiddleInnerFlex>
-          <MiddleInnerFlex>{price} ლ</MiddleInnerFlex>
+          <PriceContainer>{price} ლ</PriceContainer>
         </MiddleInfoContainer>
         <LowerInfoContainer>
           <LowerInnerFlex>
-            {views} {order_date}
+            {views} ნახვა ● {differenceInDays} დღის წინ
           </LowerInnerFlex>
           <LowerInnerFlex>
             <img src={penIcon} width={14}></img>

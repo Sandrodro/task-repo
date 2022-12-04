@@ -14,6 +14,7 @@ import {
   Model,
   Category,
   FilterAndSort,
+  ProductsMeta,
 } from "../../types";
 
 import Header from "../../components/Header";
@@ -26,6 +27,8 @@ import {
   LeftGridItem,
   RightGridItem,
   BodyContainer,
+  StyledSummary,
+  SortFlex,
 } from "./MainStyles";
 
 import { Colors } from "../../constants";
@@ -34,11 +37,12 @@ const Main = () => {
   const [manufacturersList, setManufacturersList] = useState<Manufacturer[]>();
   const [categoryList, setCategoryList] = useState<Category[]>();
   const [productList, setProductList] = useState<Product[]>();
+  const [productsMeta, setProductsMeta] = useState<ProductsMeta>();
   const [modelList, setModelList] = useState<Model[]>();
   const [filterAndSort, setFilterAndSort] = useState<FilterAndSort | null>({
     ForRent: "",
-    Mans: "",
-    Cats: "",
+    Mans: [""],
+    Cats: [""],
     PriceFrom: "",
     PriceTo: "",
     SortOrder: "",
@@ -56,27 +60,34 @@ const Main = () => {
   }, [manufacturersList, categoryList, productList, modelList]);
 
   useEffect(() => {
-    console.log("PRODUCT LIST", productList);
-    console.log("CATEGORY LIST", categoryList);
-    console.log("MANUFACTURERS LIST", manufacturersList);
-    console.log("MODELS LIST", modelList);
-  }, [manufacturersList, categoryList, productList, modelList]);
-
-  useEffect(() => {
     getManufacturersList().then((data: any) => setManufacturersList(data));
     getCategoryList().then((data: any) => setCategoryList(data.data));
     getProductList(process.env.REACT_APP_PRODUCT_LIST as string).then(
-      (data: any) => setProductList(data.data.items)
+      (data: any) => {
+        setProductsMeta(data.data.meta);
+        setProductList(data.data.items);
+      }
     );
   }, []);
 
   useEffect(() => {
     console.log(filterAndSort);
     if (filterAndSort) {
-      const requestUrl = `${process.env.REACT_APP_PRODUCT_LIST}?TypeID=0&ForRent=${filterAndSort.ForRent}&Mans=${filterAndSort.Mans}&CurrencyID=1&MileageType=1&SortOrder=${filterAndSort.SortOrder}&Page=1&Period=${filterAndSort.Period}&Cats=${filterAndSort.Cats}&PriceFrom=${filterAndSort.PriceFrom}&PriceTo=${filterAndSort.PriceTo}`;
-      getProductList(requestUrl).then((data: any) =>
-        setProductList(data.data.items)
-      );
+      const requestUrl = `${
+        process.env.REACT_APP_PRODUCT_LIST
+      }?TypeID=0&ForRent=${
+        filterAndSort.ForRent
+      }&Mans=${filterAndSort.Mans.join(
+        "-"
+      )}&CurrencyID=1&MileageType=1&SortOrder=${
+        filterAndSort.SortOrder
+      }&Page=1&Period=${filterAndSort.Period}&Cats=${filterAndSort.Cats.join(
+        "."
+      )}&PriceFrom=${filterAndSort.PriceFrom}&PriceTo=${filterAndSort.PriceTo}`;
+      getProductList(requestUrl).then((data: any) => {
+        setProductList(data.data.items);
+        setProductsMeta(data.data.meta);
+      });
     }
   }, [filterAndSort]);
 
@@ -106,32 +117,45 @@ const Main = () => {
   }, [manufacturersList, productList]);
 
   return (
-    <div>
+    <>
       <Header />
       <BodyContainer>
+        {!dataLoaded && (
+          <PuffLoader
+            size={100}
+            color={Colors.RED}
+            cssOverride={{
+              display: "flex",
+              margin: "0 auto",
+              alignItems: "center",
+            }}
+          />
+        )}
         <MainFlex>
           <LeftGridItem>
-            {!dataLoaded && (
-              <PuffLoader
-                size={100}
-                color={Colors.RED}
-                cssOverride={{ display: "block", margin: "0 auto" }}
-              />
-            )}
-            {productList && manufacturersList && modelList && categoryList && (
-              <Filter
-                manufacturersList={manufacturersList}
-                modelList={modelList}
-                categoryList={categoryList}
-                setFilterAndSort={setFilterAndSort}
-              />
-            )}
+            {productList &&
+              manufacturersList &&
+              modelList &&
+              categoryList &&
+              dataLoaded && (
+                <Filter
+                  manufacturersList={manufacturersList}
+                  modelList={modelList}
+                  categoryList={categoryList}
+                  setFilterAndSort={setFilterAndSort}
+                />
+              )}
           </LeftGridItem>
           <RightGridItem>
             <ListContainer>
-              <Sort setFilterAndSort={setFilterAndSort} />
               {productList && manufacturersList && modelList && (
                 <>
+                  <SortFlex>
+                    <StyledSummary>
+                      {productsMeta?.total} განცხადება
+                    </StyledSummary>
+                    <Sort setFilterAndSort={setFilterAndSort} />
+                  </SortFlex>
                   {productList.map((product: Product) => {
                     const manufacturer = manufacturersList.find(
                       (item: Manufacturer) =>
@@ -167,7 +191,7 @@ const Main = () => {
           </RightGridItem>
         </MainFlex>
       </BodyContainer>
-    </div>
+    </>
   );
 };
 

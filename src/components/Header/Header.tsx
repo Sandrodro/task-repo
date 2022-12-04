@@ -1,7 +1,12 @@
 import { HeaderContainer } from "./HeaderStyles";
+import MyAutoLogo from "../../assets/myAutoLogo.svg";
 
 const Header = () => {
-  return <HeaderContainer></HeaderContainer>;
+  return (
+    <HeaderContainer>
+      <img src={MyAutoLogo}></img>
+    </HeaderContainer>
+  );
 };
 
 export default Header;

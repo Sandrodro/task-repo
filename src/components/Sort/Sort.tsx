@@ -1,6 +1,6 @@
 import { FilterAndSort } from "../../types";
 
-import { StyledSelect } from "./SortStyles";
+import { StyledSelect, SelectContainer } from "./SortStyles";
 
 interface IProps {
   setFilterAndSort: any;
@@ -8,7 +8,7 @@ interface IProps {
 
 const Sort = ({ setFilterAndSort }: IProps) => {
   return (
-    <div>
+    <SelectContainer>
       <StyledSelect
         onChange={(e: any) =>
           setFilterAndSort((state: FilterAndSort) => ({
@@ -43,7 +43,7 @@ const Sort = ({ setFilterAndSort }: IProps) => {
         <option value={"5"}>გარბენი კლებადი</option>
         <option value={"6"}>გარბენი ზრდადი</option>
       </StyledSelect>
-    </div>
+    </SelectContainer>
   );
 };
 

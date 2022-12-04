@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export const MainContainer = styled.section.attrs({
-  className: "grid grid-cols-5 bg-white rounded-xl w-5/12 gap-x-1.5 py-4 px-3",
+  className: "grid grid-cols-5 bg-white rounded-xl w-full gap-x-1.5 py-4 px-3",
 })``;
 
 export const ImageContainer = styled.div.attrs({
@@ -8,7 +8,7 @@ export const ImageContainer = styled.div.attrs({
 })``;
 
 export const InfoContainer = styled.div.attrs({
-  className: "col-span-4 bg-blue grid grid-rows-4 grid-cols-1",
+  className: "col-span-4 grid grid-rows-4 grid-cols-1",
 })``;
 
 export const TopInfoContainer = styled.div.attrs({
@@ -32,7 +32,11 @@ export const MiddleInfoContainer = styled.div.attrs({
 })``;
 
 export const MiddleInnerFlex = styled.div.attrs({
-  className: "flex flex-col col-span-1",
+  className: "flex flex-col col-span-1 gap-5",
+})``;
+
+export const PriceContainer = styled.div.attrs({
+  className: "flex flex-col col-span-1 gap-5 justify-self-end",
 })``;
 
 export const LowerInfoContainer = styled.div.attrs({
@@ -40,5 +44,17 @@ export const LowerInfoContainer = styled.div.attrs({
 })``;
 
 export const LowerInnerFlex = styled.div.attrs({
-  className: "flex flex-row justify-between",
+  className: "flex flex-row justify-between items-end gap-4 text-xs",
+})`
+  color: #6f7383;
+`;
+
+export const AttributeText = styled.div.attrs({
+  className: "text-xs font-medium",
+})`
+  color: #1b1d25;
+`;
+
+export const AttributeContainer = styled.div.attrs({
+  className: "flex flex-row items-center gap-3",
 })``;

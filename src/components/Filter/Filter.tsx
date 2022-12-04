@@ -1,5 +1,7 @@
 import { Formik, Field, Form } from "formik";
 
+import CustomSelect from "../CustomSelect";
+
 import FilterCarIcon from "../../assets/filterCarIcon.svg";
 import FilterBikeIcon from "../../assets/filterBikeIcon.svg";
 import FilterTruckIcon from "../../assets/filterTruckIcon.svg";
@@ -19,6 +21,7 @@ import {
   Label,
   StyledSelect,
   StyledNumberField,
+  InputVerticalFlex,
 } from "./FilterStyles";
 
 interface IProps {
@@ -37,9 +40,9 @@ const Filter = ({
   return (
     <Formik
       initialValues={{
-        ForRent: "",
-        Mans: "",
-        Cats: "",
+        ForRent: "0",
+        Mans: [""],
+        Cats: [""],
         PriceFrom: "",
         PriceTo: "",
       }}
@@ -56,68 +59,85 @@ const Filter = ({
     >
       <FilterContainer>
         <IconsContainer>
-          <FilterIcon src={FilterCarIcon}></FilterIcon>
-          <FilterIcon src={FilterTruckIcon}></FilterIcon>
-          <FilterIcon src={FilterBikeIcon}></FilterIcon>
+          <FilterIcon src={FilterCarIcon} height={14} width={30}></FilterIcon>
+          <FilterIcon src={FilterTruckIcon} height={18} width={22}></FilterIcon>
+          <FilterIcon src={FilterBikeIcon} height={14} width={30}></FilterIcon>
         </IconsContainer>
         <Form>
           <InputContainer>
-            <Label htmlFor="ForRent">გარიგების ტიპი</Label>
-            <Field name="ForRent" id="ForRent">
-              {({ field }: { field: any }) => (
-                <StyledSelect {...field}>
-                  <option value={"0"}>იყიდება</option>
-                  <option value={"1"}>ქირავდება</option>
-                </StyledSelect>
-              )}
-            </Field>
-            <Label htmlFor="Mans">მწარმოებელი</Label>
-            <Field name="Mans" id="Mans">
-              {({ field }: { field: any }) => (
-                <StyledSelect {...field} placeholder="ყველა მწარმოებელი">
-                  {manufacturersList.map((item: Manufacturer) => (
-                    <option value={item.man_id} key={item.man_id}>
-                      {item.man_name}
-                    </option>
-                  ))}
-                </StyledSelect>
-              )}
-            </Field>
-            <Label htmlFor="category">კატეგორია</Label>
-            <Field name="category" id="category">
-              {({ field }: { field: any }) => (
-                <StyledSelect {...field} placeholder="ყველა მწარმოებელი">
-                  {categoryList.map((item: Category) => (
-                    <option value={item.category_id} key={item.category_id}>
-                      {item.title}
-                    </option>
-                  ))}
-                </StyledSelect>
-              )}
-            </Field>
+            <InputVerticalFlex>
+              <Label htmlFor="ForRent">გარიგების ტიპი</Label>
+              <Field name="ForRent" id="ForRent">
+                {({ field }: { field: any }) => (
+                  <CustomSelect
+                    placeholder="გარიგების ტიპი"
+                    isMulti={false}
+                    field={field}
+                    data={[
+                      { value: "0", label: "იყიდება" },
+                      { value: "1", label: "ქირავდება" },
+                    ]}
+                  />
+                )}
+              </Field>
+            </InputVerticalFlex>
+            <InputVerticalFlex>
+              <Label htmlFor="Mans">მწარმოებელი</Label>
+              <Field name="Mans" id="Mans">
+                {({ field }: { field: any }) => (
+                  <CustomSelect
+                    placeholder="მწარმოებელი"
+                    isMulti
+                    field={field}
+                    data={manufacturersList.map((item: Manufacturer) => ({
+                      value: item.man_id,
+                      label: item.man_name,
+                    }))}
+                  />
+                )}
+              </Field>
+            </InputVerticalFlex>
+            <InputVerticalFlex>
+              <Label htmlFor="Cats">კატეგორია</Label>
+              <Field name="Cats" id="Cats">
+                {({ field }: { field: any }) => (
+                  <CustomSelect
+                    placeholder="კატეგორია"
+                    isMulti
+                    field={field}
+                    data={categoryList.map((item: Category) => ({
+                      value: item.category_id,
+                      label: item.title,
+                    }))}
+                  />
+                )}
+              </Field>
+            </InputVerticalFlex>
             <PriceContainer>
-              <LabelAndIcon>
-                <Label>ფასი</Label>
-              </LabelAndIcon>
-              <RangeContainer>
-                <Field name="PriceFrom" id="PriceFrom" type="number">
-                  {({ field }: { field: any }) => (
-                    <StyledNumberField
-                      {...field}
-                      type="string"
-                    ></StyledNumberField>
-                  )}
-                </Field>
-                -
-                <Field name="PriceTo" id="PriceTo" type="number">
-                  {({ field }: { field: any }) => (
-                    <StyledNumberField
-                      {...field}
-                      type="string"
-                    ></StyledNumberField>
-                  )}
-                </Field>
-              </RangeContainer>
+              <InputVerticalFlex>
+                <LabelAndIcon>
+                  <Label>ფასი</Label>
+                </LabelAndIcon>
+                <RangeContainer>
+                  <Field name="PriceFrom" id="PriceFrom" type="number">
+                    {({ field }: { field: any }) => (
+                      <StyledNumberField
+                        {...field}
+                        type="string"
+                      ></StyledNumberField>
+                    )}
+                  </Field>
+                  -
+                  <Field name="PriceTo" id="PriceTo" type="number">
+                    {({ field }: { field: any }) => (
+                      <StyledNumberField
+                        {...field}
+                        type="string"
+                      ></StyledNumberField>
+                    )}
+                  </Field>
+                </RangeContainer>
+              </InputVerticalFlex>
             </PriceContainer>
             <ButtonContainer>
               <SubmitButton type="submit">ძებნა</SubmitButton>

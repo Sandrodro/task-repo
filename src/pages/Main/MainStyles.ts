@@ -13,9 +13,17 @@ export const LeftGridItem = styled.div.attrs({
 })``;
 
 export const RightGridItem = styled.div.attrs({
-  className: "col-span-4 w-fit",
+  className: "col-span-4 w-full",
 })``;
 
 export const BodyContainer = styled.main.attrs({
-  className: "mx-auto w-100 px-52 bg-background",
+  className: "mx-auto w-full px-96 pt-8 bg-background",
+})``;
+
+export const StyledSummary = styled.p.attrs({
+  className: "font-normal text-base",
+})``;
+
+export const SortFlex = styled.div.attrs({
+  className: "flex flex-row items-center justify-between w-full",
 })``;

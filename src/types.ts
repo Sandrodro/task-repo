@@ -53,10 +53,17 @@ export type Model = {
 
 export type FilterAndSort = {
   ForRent: string;
-  Mans: string;
-  Cats: string;
+  Mans: any;
+  Cats: any;
   PriceFrom: string;
   PriceTo: string;
   SortOrder: string;
   Period: string;
+};
+
+export type ProductsMeta = {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
 };

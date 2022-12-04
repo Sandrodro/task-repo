@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
 export const HeaderContainer = styled.header.attrs({
-  className: "w-100 h-20 px-52 bg-white mb-8",
+  className: "w-full h-20 px-96 bg-white flex flex-row items-center",
 })``;
