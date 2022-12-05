@@ -41,22 +41,26 @@ const Filter = ({
   const [selectedManufacturerModels, setSelectedManufacturerModels] = useState<
     Model[]
   >([]);
-  const [manufacturerIds, setManufacturerIds] = useState<any>([]);
+  const [manufacturerIds, setManufacturerIds] = useState<string[]>([]);
 
   const [modelIds, setModelIds] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!manufacturerIds.length) {
+      setModelIds([]);
+      setSelectedManufacturerModels([]);
+    }
+  }, [manufacturerIds]);
+
+  useEffect(() => {
     if (
-      !manufacturerIds.every((item: any) => item === "") ||
+      !manufacturerIds.every((item: string) => item === "") ||
       manufacturerIds.length !== 0
     ) {
       const promiseArray: any = [];
-      manufacturerIds.forEach((manId: number) => {
+      manufacturerIds.forEach((manId: string) => {
         const promise = new Promise((resolve, reject) => {
           getCarModelsPerManufacturer(manId).then((data) => {
-            const arr = data.data.map(
-              (item: any) => `${manId}.${item.model_id}`
-            );
             resolve(data);
           });
         });
@@ -87,7 +91,7 @@ const Filter = ({
         let modelIdArray: string[] = [];
         if (modelIds.length) {
           const split = modelIds.map((item) => item.split("."));
-          const uniqueMans: any = [];
+          const uniqueMans: string[] = [];
           split.forEach((item: any) => {
             if (!uniqueMans.includes(item[0])) {
               uniqueMans.push(item[0]);
@@ -105,8 +109,6 @@ const Filter = ({
             return string;
           });
         }
-
-        console.log(modelIds, manufacturerIds);
 
         setFilterAndSort((value: FilterAndSort) => ({
           ...value,
@@ -165,8 +167,8 @@ const Filter = ({
               <Field name="Mans" id="Mans">
                 {({ field, form }: { field: any; form: any }) => {
                   const disabled =
-                    form.values.Mans.every((item: any) => item === "") ||
-                    form.values.Mans.length === 0;
+                    manufacturerIds.every((item: any) => item === "") ||
+                    manufacturerIds.length === 0;
 
                   const dataArr = selectedManufacturerModels || [];
 

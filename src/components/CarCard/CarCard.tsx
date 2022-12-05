@@ -7,6 +7,7 @@ import AutomaticIcon from "../../assets/automaticIcon.svg";
 import KmIcon from "../../assets/kmIcon.svg";
 import VolumeIcon from "../../assets/volumeIcon.svg";
 import WheelIcon from "../../assets/wheelIcon.svg";
+import LariSymbol from "../../assets/lariSymbol.svg";
 import moment from "moment";
 
 import {
@@ -70,12 +71,14 @@ const CarCard = ({
   }, [order_date]);
 
   return (
-    <MainContainer loading={loading}>
+    <MainContainer load={loading}>
       <ImageContainer>
         <img
           src={`https://static.my.ge/myauto/photos/${photo}/thumbs/${car_id}_1.jpg?v=${photo_ver}`}
-          width={180}
-          style={{ borderRadius: "8px" }}
+          width={220}
+          style={{
+            borderRadius: "8px",
+          }}
         ></img>
       </ImageContainer>
       <InfoContainer>
@@ -109,7 +112,9 @@ const CarCard = ({
               </AttributeText>
             </AttributeContainer>
           </MiddleInnerFlex>
-          <PriceContainer>{price} ლ</PriceContainer>
+          <PriceContainer>
+            {price} <img src={LariSymbol} width={24} />
+          </PriceContainer>
         </MiddleInfoContainer>
         <LowerInfoContainer>
           <LowerInnerFlex>

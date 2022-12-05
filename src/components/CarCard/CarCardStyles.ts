@@ -1,8 +1,9 @@
 import styled from "styled-components";
 export const MainContainer = styled.section.attrs({
-  className: "grid grid-cols-5 bg-white rounded-xl w-full gap-x-1.5 py-4 px-3",
-})<{ loading: boolean }>`
-  opacity: ${(p) => (p.loading ? "70%" : "100%")};
+  className:
+    "flex flex-col md:grid md:grid-cols-5 bg-white rounded-xl w-full gap-x-1.5 py-4 px-3",
+})<{ load: boolean }>`
+  opacity: ${(p) => (p.load ? "70%" : "100%")};
 `;
 
 export const ImageContainer = styled.div.attrs({
@@ -38,7 +39,7 @@ export const MiddleInnerFlex = styled.div.attrs({
 })``;
 
 export const PriceContainer = styled.div.attrs({
-  className: "flex flex-col col-span-1 gap-5 justify-self-end",
+  className: "flex flex-row items-center col-span-1 gap-1 justify-self-end",
 })``;
 
 export const LowerInfoContainer = styled.div.attrs({

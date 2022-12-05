@@ -1,7 +1,9 @@
-import { Component, useState } from "react";
+import { useState } from "react";
 import Select, { components } from "react-select";
 
 import { useFormikContext } from "formik";
+
+import { Colors } from "../../constants";
 
 interface IProps {
   data: any;
@@ -52,11 +54,16 @@ const CustomSelect = ({
           width: "100%",
           fontSize: "13px",
           fontWeight: "500",
-          color: "#6F7383",
+          color: Colors.GREY,
+        }),
+        control: (base, state) => ({
+          ...base,
+          cursor: "pointer",
         }),
         multiValue: (baseStyles, state) => ({
           ...baseStyles,
           background: "white",
+          width: "80px",
         }),
         multiValueRemove: (baseStyles, state) => ({
           display: "none",
@@ -64,12 +71,13 @@ const CustomSelect = ({
         indicatorSeparator: () => ({
           display: "none",
         }),
-        valueContainer: (base) => ({
+        valueContainer: (base, state) => ({
           ...base,
           overflowY: "hidden",
+          overflowX: "hidden",
           fontSize: "13px",
           fontWeight: "500",
-          color: "#6F7383",
+          color: Colors.GREY,
           display: "flex",
           flexFlow: "row nowrap;",
         }),
@@ -81,7 +89,7 @@ const CustomSelect = ({
           ...base,
           fontSize: "13px",
           fontWeight: "500",
-          color: "#6F7383",
+          color: Colors.GREY,
         }),
         option: (base) => ({
           ...base,

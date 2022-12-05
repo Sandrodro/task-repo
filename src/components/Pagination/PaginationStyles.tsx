@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
+import { Colors } from "../../constants";
+
 export const MainContainer = styled.div.attrs({
   className:
     "flex flex-row items-center justify-evenly w-full mx-auto mb-8 mt-8 bg-white rounded-md",
 })`
-  color: #5e697d;
+  color: ${Colors.GREY};
 
   & ul {
     display: flex;
@@ -20,8 +22,8 @@ export const MainContainer = styled.div.attrs({
     }
   }
   .active_tab {
-    border-bottom: 3px solid #fd4100;
-    color: #fd4100;
+    border-bottom: 3px solid ${Colors.RED};
+    color: ${Colors.RED};
   }
   .previous {
     margin-right: 25px;

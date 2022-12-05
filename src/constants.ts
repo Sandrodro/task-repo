@@ -1,5 +1,6 @@
 enum Colors {
   RED = "#FD4100",
+  GREY = "#6F7383",
 }
 
 enum SaleTypes {

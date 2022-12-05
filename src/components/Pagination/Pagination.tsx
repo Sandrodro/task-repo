@@ -2,6 +2,8 @@ import { MainContainer } from "./PaginationStyles";
 import { useMemo } from "react";
 import ReactPaginate from "react-paginate";
 
+import { Colors } from "../../constants";
+
 interface IProps {
   totalPages: number;
   currentPage: number;
@@ -10,7 +12,7 @@ interface IProps {
 }
 
 const ButtonComponent = ({ label }: { label: string }) => (
-  <div style={{ whiteSpace: "nowrap", color: "#fd4100" }}>{label}</div>
+  <div style={{ whiteSpace: "nowrap", color: Colors.RED }}>{label}</div>
 );
 
 const Pagination = ({

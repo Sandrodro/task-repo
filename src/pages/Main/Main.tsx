@@ -59,7 +59,7 @@ const Main = () => {
       categoryList,
       productList,
       modelList,
-    ].every((item: Product[] | any) => item?.length > 0);
+    ].every((item: Product[] | any) => item);
     return allLoaded;
   }, [manufacturersList, categoryList, productList, modelList]);
 
@@ -87,6 +87,7 @@ const Main = () => {
       }&Period=${filterAndSort.Period}&Cats=${filterAndSort.Cats.join(
         "."
       )}&PriceFrom=${filterAndSort.PriceFrom}&PriceTo=${filterAndSort.PriceTo}`;
+
       setFilterLoading(true);
       getProductList(requestUrl).then((data: any) => {
         setProductList(data.data.items);
