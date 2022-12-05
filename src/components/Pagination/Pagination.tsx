@@ -1,5 +1,4 @@
 import { MainContainer } from "./PaginationStyles";
-import { useMemo } from "react";
 import ReactPaginate from "react-paginate";
 
 import { Colors } from "../../constants";

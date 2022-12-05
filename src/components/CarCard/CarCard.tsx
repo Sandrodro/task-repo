@@ -74,6 +74,7 @@ const CarCard = ({
     <MainContainer load={loading}>
       <ImageContainer>
         <img
+          alt="Car Image"
           src={`https://static.my.ge/myauto/photos/${photo}/thumbs/${car_id}_1.jpg?v=${photo_ver}`}
           width={220}
           style={{

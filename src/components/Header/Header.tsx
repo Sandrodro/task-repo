@@ -4,7 +4,7 @@ import MyAutoLogo from "../../assets/myAutoLogo.svg";
 const Header = () => {
   return (
     <HeaderContainer>
-      <img src={MyAutoLogo}></img>
+      <img src={MyAutoLogo} alt="Logo"></img>
     </HeaderContainer>
   );
 };
